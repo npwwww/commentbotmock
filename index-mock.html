@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comment Video</title>
+  <style>
+    :root {
+      --bg: #fff6ef;
+      --surface: #ffffff;
+      --surface-soft: #fffaf6;
+      --ink: #241c17;
+      --muted: #7a6d63;
+      --accent: #ee4d2d;
+      --accent-dark: #d73f20;
+      --accent-soft: #fff0ea;
+      --line: rgba(36, 28, 23, 0.1);
+      --shadow: 0 18px 40px rgba(96, 52, 20, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255, 198, 177, 0.7), transparent 24%),
+        linear-gradient(180deg, #fffaf5 0%, var(--bg) 52%, #f9ede1 100%);
+    }
+
+    .page {
+      width: min(980px, calc(100% - 24px));
+      margin: 18px auto;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      border-radius: 34px;
+      background: rgba(255, 249, 244, 0.82);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    .topbar,
+    .hero,
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      background: var(--surface);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      background: linear-gradient(180deg, #fffdfb, #fff7f0);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      color: white;
+      font-weight: 800;
+      font-size: 0.95rem;
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 0.98rem;
+    }
+
+    .brand span,
+    .tab {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tab {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .tab.active {
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+      border-color: transparent;
+    }
+
+    .hero {
+      padding: 24px;
+      margin-bottom: 18px;
+      background:
+        radial-gradient(circle at top right, rgba(255, 216, 199, 0.7), transparent 26%),
+        linear-gradient(180deg, #fffdfa, #fff7f0);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(238, 77, 45, 0.1);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      margin-top: 16px;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      font-family: Georgia, "Times New Roman", serif;
+      max-width: 12ch;
+    }
+
+    .hero p {
+      margin-top: 14px;
+      max-width: 58ch;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .layout {
+      display: grid;
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .subtle {
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+
+    .upload-box {
+      display: grid;
+      gap: 14px;
+      padding: 22px;
+      border: 1.5px dashed rgba(238, 77, 45, 0.35);
+      border-radius: 22px;
+      background: linear-gradient(180deg, #fffefd, #fff5ee);
+      text-align: center;
+    }
+
+    .upload-box strong {
+      font-size: 1.05rem;
+    }
+
+    .upload-box span {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .button,
+    label.button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 46px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 999px;
+      font: inherit;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 160ms ease;
+    }
+
+    .button:hover,
+    label.button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    }
+
+    .button-secondary {
+      color: var(--ink);
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    .video-wrap {
+      display: grid;
+      gap: 14px;
+    }
+
+    .feed-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .results-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr;
+    }
+
+    .video-card {
+      display: grid;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #fffdfa;
+      box-shadow: 0 10px 22px rgba(80, 43, 14, 0.05);
+    }
+
+    .video-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .creator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffd3c1, #ffedd9);
+      color: var(--accent-dark);
+      font-weight: 800;
+      font-size: 0.92rem;
+    }
+
+    .creator h3 {
+      font-size: 0.98rem;
+      margin-bottom: 2px;
+    }
+
+    .creator span {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .theme-pill {
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-size: 0.79rem;
+      font-weight: 700;
+    }
+
+    video {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      max-height: 760px;
+      border-radius: 22px;
+      background: #140f0d;
+      border: 1px solid var(--line);
+      object-fit: cover;
+    }
+
+    .empty-state {
+      display: grid;
+      place-items: center;
+      min-height: 280px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .file-meta {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .composer input,
+    .composer select,
+    .bot-lab textarea,
+    .bot-lab select {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0 12px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .bot-lab {
+      display: grid;
+      gap: 12px;
+    }
+
+    .bot-lab textarea {
+      min-height: 120px;
+      padding: 12px;
+      resize: vertical;
+    }
+
+    .bot-controls {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .bot-output {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fffdfb;
+      line-height: 1.6;
+      min-height: 88px;
+      white-space: pre-wrap;
+    }
+
+    .comment-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .comment-shell {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .comment-shell-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: #fff8f4;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .comment-shell-head strong {
+      font-size: 0.93rem;
+    }
+
+    .comment-count {
+      color: var(--muted);
+      font-size: 0.83rem;
+    }
+
+    .comment-card {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      padding: 12px 14px;
+      border-top: 1px solid rgba(36, 28, 23, 0.06);
+      background: white;
+    }
+
+    .comment-card.reply {
+      margin-left: 22px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      background: #fffaf7;
+    }
+
+    .comment-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff8f4;
+      color: var(--ink);
+      font: inherit;
+      cursor: pointer;
+      transition: transform 160ms ease;
+    }
+
+    .comment-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    .comment-toggle strong {
+      font-size: 0.96rem;
+    }
+
+    .comment-toggle span {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .comment-drawer {
+      display: none;
+    }
+
+    .comment-drawer.open {
+      display: block;
+    }
+
+    .composer {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 150px 88px;
+      gap: 10px;
+      padding: 14px;
+      border-top: 1px solid var(--line);
+      background: #fffdfb;
+    }
+
+    .comment-avatar {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #ffe5db;
+      color: var(--accent-dark);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .comment-body {
+      min-width: 0;
+    }
+
+    .comment-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+
+    .comment-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .comment-tag {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #fff1eb;
+      color: var(--accent-dark);
+      font-size: 0.73rem;
+      font-weight: 700;
+    }
+
+    .comment-time {
+      color: var(--muted);
+      font-size: 0.76rem;
+    }
+
+    .comment-text {
+      font-size: 0.98rem;
+      line-height: 1.45;
+      font-weight: 600;
+      word-break: break-word;
+    }
+
+    .comment-actions-row {
+      display: flex;
+      gap: 14px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .note {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(100% - 16px, 920px);
+        margin: 8px auto;
+        padding: 14px;
+        border-radius: 24px;
+      }
+
+      .topbar,
+      .hero,
+      .panel {
+        padding: 18px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .composer {
+        grid-template-columns: 1fr;
+      }
+
+      .bot-controls {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="topbar">
+      <div class="brand">
+        <div class="brand-badge">S</div>
+        <div>
+          <strong>Comment Video</strong>
+          <span>Upload and preview comments</span>
+        </div>
+      </div>
+      <div class="tabs">
+        <span class="tab">For You</span>
+        <span class="tab active">Following</span>
+        <span class="tab">Comments</span>
+      </div>
+    </section>
+
+    <section class="hero">
+      <span class="eyebrow">Comment Video</span>
+      <h1>Upload videos and preview comments.</h1>
+    </section>
+
+    <section class="layout">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Upload Video</h2>
+          <span class="subtle">Local files only</span>
+        </div>
+
+        <div class="upload-box">
+          <strong>Choose one or more videos</strong>
+          <span>Upload videos to preview feed cards and comment replies.</span>
+          <div class="actions">
+            <label class="button button-primary" for="videoInput">Upload Video</label>
+            <button class="button button-secondary" id="regenButton" type="button">Refresh Comments</button>
+          </div>
+          <input id="videoInput" type="file" accept="video/*" multiple>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Feed Preview</h2>
+          <span class="subtle" id="previewStatus">No videos uploaded yet</span>
+        </div>
+
+        <div class="video-wrap">
+          <div class="feed-tabs" id="emptyState">
+            <span class="tab active">Video</span>
+            <span class="tab">Livestream</span>
+            <span class="tab">For You</span>
+          </div>
+          <div class="results-grid" id="videoResults" hidden></div>
+          <div class="file-meta" id="fileMeta">Waiting for video files.</div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Comments</h2>
+          <span class="subtle">Tap a comment section below each video</span>
+        </div>
+        <p class="note">
+          Upload videos above and open each comment section when you want to view the thread.
+        </p>
+      </section>
+
+    </section>
+  </main>
+
+  <script>
+    const videoInput = document.getElementById("videoInput");
+    const emptyState = document.getElementById("emptyState");
+    const previewStatus = document.getElementById("previewStatus");
+    const fileMeta = document.getElementById("fileMeta");
+    const regenButton = document.getElementById("regenButton");
+    const videoResults = document.getElementById("videoResults");
+
+    let currentFiles = [];
+    const interactiveThreads = {};
+
+    const knowledgeBase = {
+      glow: {
+        label: "Glow / Highlight Moment",
+        supportive: [
+          "that glow is everything you look so beautiful 💕",
+          "that glow on you is literally perfect 🥹",
+          "this dewy finish looks so pretty on you ✨"
+        ],
+        bestie: [
+          "GURL you're serving but that's a lot of highlight ngl 😭",
+          "GURL the glow ate and the camera knows it 😩",
+          "GURL this shine is doing a lot and it works 😭"
+        ],
+        relatable: [
+          "this glowing and i couldn't even if i tried 💀",
+          "me trying for this glow and getting nothing 😭",
+          "me watching this while my skin does less 🥲"
+        ],
+        sassy: [
+          "woah did you steal all the glow from the sun",
+          "that highlight really came to collect attention",
+          "the glow showed up before anything else did"
+        ],
+        sarcastic: [
+          "didn't know you needed that much highlighter but okay",
+          "apparently subtle glow was never the plan",
+          "the shine arrived first and everything else followed"
+        ]
+      },
+      skincare: {
+        label: "Skincare Before / After",
+        supportive: [
+          "your skin looks so clear genuinely so happy for you 💕",
+          "the texture difference is incredible you deserve this 🥹",
+          "your skin is glowing you deserve this so much ✨"
+        ],
+        bestie: [
+          "GURL the texture difference at week two ate no crumbs 😭",
+          "GURL SKIN SAID NEW ERA and we all saw it 🔥",
+          "GURL this result is kind of unfair in the best way 😭"
+        ],
+        relatable: [
+          "me who bought this and forgot to use it consistently 💀",
+          "me needing this two years and six products ago 🥲",
+          "me watching this while my routine lasts two days 😭"
+        ],
+        sassy: [
+          "okay the skin said i found the one and i believe it",
+          "the skin said new management and the results agree",
+          "that before and after had something to prove"
+        ],
+        sarcastic: [
+          "not sponsored on her third bottle but sure totally unrelated",
+          "two years of trying things and nine dollars fixed it okay",
+          "apparently consistency works who knew"
+        ]
+      },
+      outfit: {
+        label: "OOTD / Fit Check",
+        supportive: [
+          "this colour was literally made for you 💕",
+          "this fit looks so good on you 🥹",
+          "the whole look feels so flattering on you ✨"
+        ],
+        bestie: [
+          "GURL the fit ate but the colour is so so ngl 😩",
+          "GURL this outfit is serving and we all know it 😭",
+          "GURL the fit ate periodt and i support it 💕"
+        ],
+        relatable: [
+          "me immediately wondering if i could even pull this off 💀",
+          "me checking if my closet could ever do this 😭",
+          "me saving this while knowing i'd style it worse 🥲"
+        ],
+        sassy: [
+          "okay the fit said something and it was not quiet",
+          "the outfit walked in before you even moved",
+          "this fit had opinions and i respect that"
+        ],
+        sarcastic: [
+          "cute top not fully sure about the pants but okay",
+          "apparently the outfit came to humble everyone else",
+          "looked expensive and now the basket has ideas"
+        ]
+      },
+      offshoulder: {
+        label: "Off Shoulder Moment",
+        supportive: [
+          "shoulders out confidence up you look absolutely amazing 💕",
+          "this off shoulder look is so pretty on you 🥹",
+          "your shoulders carry this look so beautifully ✨"
+        ],
+        bestie: [
+          "GURL the off shoulder is serving and we are not okay 😭",
+          "GURL the shoulders ate and the camera agrees 🔥",
+          "GURL this neckline is doing everything right 💕"
+        ],
+        relatable: [
+          "me checking if my shoulders can even handle this energy 😭",
+          "me knowing this would expose my whole posture 💀",
+          "me trying this and immediately adjusting it all day 🥲"
+        ],
+        sassy: [
+          "sorry who gave the shoulders permission to go off like that",
+          "the shoulders really came with a full agenda",
+          "that neckline knew exactly what it was doing"
+        ],
+        sarcastic: [
+          "fifteen dollars and it looks like that okay sure",
+          "apparently shoulders are doing the heavy lifting now",
+          "off shoulder and suddenly everyone has confidence huh"
+        ]
+      },
+      shelf: {
+        label: "Organised Shelf / Setup",
+        supportive: [
+          "this space looks so peaceful you deserve this energy ✨",
+          "everything looks so calm and lovely here 🥹",
+          "this setup feels so clean and comforting 💕"
+        ],
+        bestie: [
+          "GURL the shelf ate but ngl i'd destroy it in a day 😭",
+          "GURL this setup is serving soft life so hard 💕",
+          "GURL this desk is too clean for my habits 😩"
+        ],
+        relatable: [
+          "organized ppl really live like this and i'm just watching 💀",
+          "me knowing this would last eight minutes at home 😭",
+          "me saving this while my desk looks criminal 🥲"
+        ],
+        sassy: [
+          "the shelf really said main character and meant every word",
+          "this setup has better boundaries than most people",
+          "the organization came in fully dressed"
+        ],
+        sarcastic: [
+          "organized ppl live like this huh must be nice",
+          "apparently some people put things back after using them",
+          "clean setups like this feel a little judgmental"
+        ]
+      },
+      price: {
+        label: "Price Reveal",
+        supportive: [
+          "so happy quality like this is accessible to everyone 💕",
+          "love that something this good stays affordable 🥹",
+          "that price for this quality feels so good ✨"
+        ],
+        bestie: [
+          "GURL we been paying too much this whole time 😭",
+          "GURL that price is rude after looking this good 🔥",
+          "GURL the budget ate harder than expected 😩"
+        ],
+        relatable: [
+          "me who spent way more for the exact same result 💀",
+          "me seeing this after overpaying last month 😭",
+          "me acting calm after wasting extra money 🥲"
+        ],
+        sassy: [
+          "wait that price did all that and stayed humble",
+          "the price really showed up without making noise",
+          "cheap and effective is a dangerous combination"
+        ],
+        sarcastic: [
+          "twelve dollars and it works and i've been overpaying apparently",
+          "love that i spent more for worse results",
+          "affordable and useful wow what a concept"
+        ]
+      },
+      overload: {
+        label: "Too Much / Overload Moment",
+        supportive: [
+          "love that you know exactly what works for you 💕",
+          "honestly if it works for you i love it 🥹",
+          "the confidence in that amount is kind of great ✨"
+        ],
+        bestie: [
+          "GURL the commitment is serving but that's a lot ngl 😩",
+          "GURL you used the whole thing and i respect it 😭",
+          "GURL that amount had confidence and honestly same 💕"
+        ],
+        relatable: [
+          "me also using way too much and calling it self care 💀",
+          "me every time i forget moderation exists 😭",
+          "me emptying half the bottle and hoping for the best 🥲"
+        ],
+        sassy: [
+          "okay the whole bottle in one go and the skin ate it apparently",
+          "that amount had main character confidence",
+          "subtle left the chat a while ago"
+        ],
+        sarcastic: [
+          "didn't know the whole bottle was one serving but okay",
+          "apparently moderation had the day off",
+          "a gentle amount was never invited here"
+        ]
+      },
+      lifestyle: {
+        label: "That Girl / Lifestyle Moment",
+        supportive: [
+          "you deserve to feel this good every single day 🥹",
+          "this routine feels so calm and lovely ✨",
+          "love how peaceful this whole moment feels 💕"
+        ],
+        bestie: [
+          "THAT GIRL ERA the routine ate and we are inspired 😭",
+          "GURL this soft life energy is doing everything right 💕",
+          "GURL the routine is serving and i need help immediately 🔥"
+        ],
+        relatable: [
+          "me watching this at noon still in bed wondering 😭",
+          "me saving this while doing none of it 💀",
+          "me seeing this and pretending tomorrow is my reset 🥲"
+        ],
+        sassy: [
+          "the 6am routine really said pick a side",
+          "this routine has more discipline than most group chats",
+          "the morning started with better decisions than mine"
+        ],
+        sarcastic: [
+          "6am routine alarm set didn't wake up watched this instead",
+          "apparently some people greet the sunrise on purpose",
+          "love that mornings work out for someone"
+        ]
+      },
+      default: {
+        label: "General Viral Clip",
+        supportive: [
+          "this came together so nicely honestly love it 💕",
+          "something about this feels so good to watch 🥹",
+          "this looks genuinely so well done ✨"
+        ],
+        bestie: [
+          "GURL this actually ate and i wasn't prepared 😭",
+          "GURL this clip knows exactly what it's doing 🔥",
+          "GURL the scroll stopped immediately and that's saying a lot 💕"
+        ],
+        relatable: [
+          "me replaying this like i have no other plans 💀",
+          "me acting casual after watching this three times 😭",
+          "me saving this and pretending i'll move on 🥲"
+        ],
+        sassy: [
+          "this clip really knew where the attention was",
+          "the timing on this had something to prove",
+          "it showed up ready and everyone else felt it"
+        ],
+        sarcastic: [
+          "apparently this clip needed all my attention then",
+          "watched the whole thing so i guess it worked",
+          "love when a video decides my next thirty seconds"
+        ]
+      }
+    };
+
+    const personalityOrder = [
+      { key: "supportive", label: "[Supportive]" },
+      { key: "bestie", label: "[Bestie]" },
+      { key: "relatable", label: "[Relatable]" },
+      { key: "sassy", label: "[Sassy]" },
+      { key: "sarcastic", label: "[Sarcastic]" }
+    ];
+
+    function hashString(value) {
+      let hash = 2166136261;
+      for (let index = 0; index < value.length; index += 1) {
+        hash ^= value.charCodeAt(index);
+        hash = Math.imul(hash, 16777619);
+      }
+      return hash >>> 0;
+    }
+
+    function createRng(seed) {
+      let value = seed || 1;
+      return () => {
+        value = (value + 0x6d2b79f5) | 0;
+        let next = Math.imul(value ^ (value >>> 15), 1 | value);
+        next ^= next + Math.imul(next ^ (next >>> 7), 61 | next);
+        return ((next ^ (next >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function pickWithRng(list, rng, used = new Set()) {
+      const available = list.filter((item) => !used.has(item));
+      const pool = available.length ? available : list;
+      const item = pool[Math.floor(rng() * pool.length)];
+      used.add(item);
+      return item;
+    }
+
+    function formatBytes(bytes) {
+      if (!bytes) return "Unknown size";
+      const units = ["B", "KB", "MB", "GB"];
+      let size = bytes;
+      let unitIndex = 0;
+      while (size >= 1024 && unitIndex < units.length - 1) {
+        size /= 1024;
+        unitIndex += 1;
+      }
+      return `${size.toFixed(size >= 10 || unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
+    }
+
+    function getFileSeed(file) {
+      return hashString(`${file.name}|${file.size}|${file.lastModified || 0}`);
+    }
+
+    function getSelectedCategory() {
+      return "default";
+    }
+
+    function getClipDetail(category, rng) {
+
+      const fallback = {
+        glow: ["highlight", "shine", "glow"],
+        skincare: ["texture", "before after", "skin"],
+        outfit: ["fit", "color combo", "look"],
+        offshoulder: ["neckline", "shoulders", "top"],
+        shelf: ["setup", "desk", "shelf"],
+        price: ["price", "deal", "budget"],
+        overload: ["product amount", "application", "whole bottle"],
+        lifestyle: ["routine", "morning", "vibe"],
+        default: ["clip", "ending", "post"]
+      };
+      return pickWithRng(fallback[category] || fallback.default, rng);
+    }
+
+    function getPersonalityHandle(key) {
+      const handles = {
+        supportive: "softglow_daily",
+        bestie: "gurlcartenergy",
+        relatable: "samehatmood",
+        sassy: "maincharcomment",
+        sarcastic: "dryreceiptclub"
+      };
+      return handles[key];
+    }
+
+    function getSeedUserComment(category, detail, rng, used = new Set()) {
+      const comments = {
+        glow: [
+          `that ${detail} looks crazy`,
+          `wait what ${detail} is this`,
+          `the ${detail} looks so good here`
+        ],
+        skincare: [
+          `the ${detail} difference is so obvious`,
+          `okay this actually looks like it worked`,
+          `${detail} here is kind of convincing me`
+        ],
+        outfit: [
+          `the ${detail} came together so well`,
+          `wait this ${detail} is actually cute`,
+          `the ${detail} works so well`
+        ],
+        offshoulder: [
+          `this ${detail} is so flattering`,
+          `the ${detail} is doing a lot here`,
+          `okay the ${detail} really carried this look`
+        ],
+        shelf: [
+          `this ${detail} looks way too clean`,
+          `i need my ${detail} to look like this`,
+          `everything around the ${detail} looks so organized`
+        ],
+        price: [
+          `wait that's the actual ${detail}`,
+          `why is this ${detail} so low though`,
+          `that ${detail} reveal got me`
+        ],
+        overload: [
+          `that ${detail} is a lot`,
+          `wait you used so much ${detail}`,
+          `okay that ${detail} scared me a little`
+        ],
+        lifestyle: [
+          `this ${detail} looks so peaceful`,
+          `i wish my ${detail} looked like this`,
+          `this ${detail} is too put together`
+        ],
+        default: [
+          `the ${detail} is kind of addictive`,
+          `okay i watched that ${detail} twice`,
+          `this ${detail} is actually a good post`
+        ]
+      };
+      return pickWithRng(comments[category] || comments.default, rng, used);
+    }
+
+    function chooseReplyPersonality(userText) {
+      const text = userText.toLowerCase();
+      if (/(love|pretty|beautiful|soft|peaceful|cute)/.test(text)) {
+        return "supportive";
+      }
+      if (/(omg|gurl|ate|serving|obsessed)/.test(text)) {
+        return "bestie";
+      }
+      if (/(me|same|i would|i could never)/.test(text)) {
+        return "relatable";
+      }
+      if (/(wild|crazy|dramatic|too much)/.test(text)) {
+        return "sassy";
+      }
+      if (/(okay sure|apparently|must be nice|didn't know)/.test(text)) {
+        return "sarcastic";
+      }
+      return "relatable";
+    }
+
+    function generateBotReply(file, userText, forcedPersonality = "") {
+      const category = getSelectedCategory(file);
+      const entry = knowledgeBase[category] || knowledgeBase.default;
+      const personality = forcedPersonality || chooseReplyPersonality(userText);
+      const rng = createRng(hashString(`${getFileSeed(file)}|${userText}|${personality}`));
+      return {
+        personality,
+        text: pickWithRng(entry[personality], rng),
+        likes: Math.floor(rng() * 140) + 6
+      };
+    }
+
+    function shuffle(list, rng = Math.random) {
+      const copy = [...list];
+      for (let index = copy.length - 1; index > 0; index -= 1) {
+        const randomIndex = Math.floor(rng() * (index + 1));
+        [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
+      }
+      return copy;
+    }
+
+    function renderThreadEntry({
+      avatar,
+      name,
+      tag = "",
+      time,
+      text,
+      likes,
+      isReply = false
+    }) {
+      return `
+        <div class="comment-card${isReply ? " reply" : ""}">
+          <div class="comment-avatar">${avatar}</div>
+          <div class="comment-body">
+            <div class="comment-meta">
+              <span class="comment-name">${name}</span>
+              ${tag ? `<span class="comment-tag">${tag}</span>` : ""}
+              <span class="comment-time">${time}</span>
+            </div>
+            <div class="comment-text">${text}</div>
+            <div class="comment-actions-row">
+              <span>Like</span>
+              <span>Reply</span>
+              <span>${likes} likes</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function getCommentCount() {
+      return Math.floor(Math.random() * 8) + 6;
+    }
+
+    function renderCommentsBlock(file) {
+      const category = getSelectedCategory(file);
+      const entry = knowledgeBase[category] || knowledgeBase.default;
+      const rng = createRng(getFileSeed(file));
+      const detail = getClipDetail(category, rng);
+      const userCommentUsed = new Set();
+      const replyUsed = new Set();
+      const seed = getFileSeed(file);
+      const userOne = getSeedUserComment(category, detail, rng, userCommentUsed);
+      const userTwo = getSeedUserComment(category, detail, rng, userCommentUsed);
+      const topComments = [
+        renderThreadEntry({
+          avatar: "U",
+          name: `user_${Math.floor(rng() * 900 + 100)}`,
+          time: `${Math.floor(rng() * 9) + 1}m`,
+          text: userOne,
+          likes: Math.floor(rng() * 120) + 8
+        }),
+        renderThreadEntry({
+          avatar: "U",
+          name: `user_${Math.floor(rng() * 900 + 100)}`,
+          time: `${Math.floor(rng() * 12) + 2}m`,
+          text: userTwo,
+          likes: Math.floor(rng() * 90) + 4
+        }),
+        renderThreadEntry({
+          avatar: "U",
+          name: `user_${Math.floor(rng() * 900 + 100)}`,
+          time: "reply",
+          text: pickWithRng([
+            "same i thought the exact same thing",
+            "wait yes that was my first thought too",
+            "right i noticed that immediately",
+            "okay glad someone said it first"
+          ], rng, replyUsed),
+          likes: Math.floor(rng() * 40) + 2,
+          isReply: true
+        })
+      ];
+
+      const personalityComments = personalityOrder.map((personality) =>
+        renderThreadEntry({
+          avatar: personality.label.replace(/[^A-Z]/g, "").charAt(0),
+          name: getPersonalityHandle(personality.key),
+          tag: personality.label,
+          time: `${Math.floor(rng() * 14) + 3}m`,
+          text: pickWithRng(entry[personality.key], rng, new Set()),
+          likes: Math.floor(rng() * 180) + 12
+        })
+      );
+
+      const extraThread = (interactiveThreads[seed] || []).map((item) =>
+        renderThreadEntry(item)
+      );
+      const commentsHtml = shuffle([...topComments, ...personalityComments], rng)
+        .concat(extraThread)
+        .join("");
+
+      return {
+        commentsHtml,
+        label: entry.label,
+        count: Math.floor(rng() * 8) + 6
+      };
+    }
+
+    function renderBulkResults() {
+      if (!currentFiles.length) {
+        emptyState.hidden = false;
+        videoResults.hidden = true;
+        previewStatus.textContent = "No videos uploaded yet";
+        fileMeta.textContent = "Waiting for video files.";
+        return;
+      }
+
+      emptyState.hidden = true;
+      videoResults.hidden = false;
+      previewStatus.textContent = `${currentFiles.length} video${currentFiles.length === 1 ? "" : "s"} uploaded`;
+      fileMeta.textContent = `${currentFiles.length} file${currentFiles.length === 1 ? "" : "s"} loaded for preview and mock comment generation.`;
+
+      videoResults.innerHTML = currentFiles
+        .map((file, index) => {
+          const objectUrl = URL.createObjectURL(file);
+          const rendered = renderCommentsBlock(file);
+          const seed = getFileSeed(file);
+          return `
+            <article class="video-card">
+              <div class="video-card-head">
+                <div class="creator">
+                  <div class="avatar">S</div>
+                  <div>
+                    <h3>shop_creator_${index + 1}</h3>
+                    <span>${file.name}</span>
+                  </div>
+                </div>
+                <span class="theme-pill">${rendered.label}</span>
+              </div>
+              <video controls src="${objectUrl}"></video>
+              <div class="file-meta">
+                File: ${file.name} | Type: ${file.type || "Unknown"} | Size: ${formatBytes(file.size)}
+              </div>
+              <button class="comment-toggle" type="button" data-comment-toggle>
+                <strong>Comment section</strong>
+                <span>${rendered.count} comments</span>
+              </button>
+              <div class="comment-drawer" data-comment-drawer>
+                <div class="comment-shell">
+                  <div class="comment-shell-head">
+                    <strong>Comments</strong>
+                    <span class="comment-count">${rendered.count} in thread</span>
+                  </div>
+                  <div class="comment-list">
+                    ${rendered.commentsHtml}
+                  </div>
+                  <div class="composer">
+                    <input type="text" placeholder="Write a user comment" data-comment-input="${seed}">
+                    <select data-persona-hint="${seed}">
+                      <option value="">Auto reply</option>
+                      <option value="supportive">Supportive</option>
+                      <option value="bestie">Bestie</option>
+                      <option value="relatable">Relatable</option>
+                      <option value="sassy">Sassy</option>
+                      <option value="sarcastic">Sarcastic</option>
+                    </select>
+                    <button class="button button-primary" type="button" data-comment-send="${seed}">Send</button>
+                  </div>
+                </div>
+              </div>
+            </article>
+          `;
+        })
+        .join("");
+
+      videoResults.querySelectorAll("[data-comment-toggle]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const drawer = button.nextElementSibling;
+          const isOpen = drawer.classList.toggle("open");
+          button.querySelector("strong").textContent = isOpen ? "Hide comments" : "Comment section";
+        });
+      });
+
+      videoResults.querySelectorAll("[data-comment-send]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const seed = button.dataset.commentSend;
+          const input = videoResults.querySelector(`[data-comment-input="${seed}"]`);
+          const hint = videoResults.querySelector(`[data-persona-hint="${seed}"]`);
+          const userText = input.value.trim();
+          if (!userText) {
+            return;
+          }
+
+          const file = currentFiles.find((item) => String(getFileSeed(item)) === seed);
+          if (!file) {
+            return;
+          }
+
+          const reply = generateBotReply(file, userText, hint.value);
+
+          const personalityLabel = personalityOrder.find((item) => item.key === reply.personality)?.label || "[Relatable]";
+          interactiveThreads[seed] = [
+            ...(interactiveThreads[seed] || []),
+            {
+              avatar: "U",
+              name: `you_${Math.floor(Math.random() * 900 + 100)}`,
+              time: "now",
+              text: userText,
+              likes: 0
+            },
+            {
+              avatar: personalityLabel.replace(/[^A-Z]/g, "").charAt(0),
+              name: getPersonalityHandle(reply.personality),
+              tag: personalityLabel,
+              time: "reply",
+              text: reply.text,
+              likes: reply.likes,
+              isReply: true
+            }
+          ];
+
+          renderBulkResults();
+        });
+      });
+    }
+
+    videoInput.addEventListener("change", (event) => {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) {
+        return;
+      }
+      currentFiles = files;
+      renderBulkResults();
+    });
+
+    regenButton.addEventListener("click", () => {
+      if (!currentFiles.length) {
+        return;
+      }
+      renderBulkResults();
+    });
+  </script>
+</body>
+</html>
